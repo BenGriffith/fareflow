@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# uv
+.venv/
+
+# Environment
+.env
+
+# Spark / Delta (local mode only — if you ever use DATA_ROOT=file://…)
+data/
