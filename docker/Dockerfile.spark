@@ -1,0 +1,16 @@
+FROM bitnami/spark:3.4.3
+
+USER root
+RUN install_packages python3-pip && \
+    pip3 install --no-cache-dir \
+      delta-spark==2.4.0 \
+      python-dotenv==1.0.1 \
+      typer==0.12.5 \
+      rich==13.7.1
+# If your Spark base lacks Hadoop AWS libs, uncomment the two lines below:
+# RUN curl -L -o /opt/bitnami/spark/jars/hadoop-aws-3.3.2.jar https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar \
+#  && curl -L -o /opt/bitnami/spark/jars/aws-java-sdk-bundle-1.12.262.jar https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar
+
+WORKDIR /opt/project
+ENV PYTHONPATH=/opt/project
+USER 1001
