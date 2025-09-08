@@ -1,18 +1,12 @@
-import boto3
 from botocore.exceptions import ClientError, EndpointConnectionError
 
 from pipelines.libs import constants
+from scripts.helpers import s3_client
 
 
 def main():
-    s3 = boto3.client(
-        "s3",
-        endpoint_url=constants.MINIO_ENDPOINT,
-        aws_access_key_id=constants.MINIO_ACCESS_KEY,
-        aws_secret_access_key=constants.MINIO_SECRET_KEY,
-    )
-
     try:
+        s3 = s3_client()
         names = [bucket["Name"] for bucket in s3.list_buckets().get("Buckets", [])]
         if constants.DATA_BUCKET in names:
             print(f"Bucket already exists: {constants.DATA_BUCKET}")
