@@ -61,6 +61,8 @@ services:
       MINIO_ENDPOINT: ${MINIO_ENDPOINT}
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
       S3A_PATH_STYLE: ${S3A_PATH_STYLE}
     volumes:
       - ../pipelines:/opt/project/pipelines
@@ -68,7 +70,6 @@ services:
     command: bash -c "tail -f /dev/null"
     ports:
       - "4040:4040"   # Spark UI
-    user: "${UID:-1000}:${GID:-1000}"
     tty: true
 
 volumes:
