@@ -1,0 +1,22 @@
+{
+  "name": "fareflow (spark)",
+  "dockerComposeFile": ["../docker/docker-compose.yml"],
+  "service": "spark",
+  "workspaceFolder": "/workspace",
+  "overrideCommand": true,
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "vscodevim.vim"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/bitnami/python/bin/python",
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}
