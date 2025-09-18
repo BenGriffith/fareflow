@@ -5,9 +5,8 @@ services:
     ports:
       - "9000:9000"   # S3 API
       - "9090:9090"   # MinIO Console
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
-      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    env_file:
+      - ../.env
     volumes:
       - minio-data:/data
 
@@ -30,11 +29,6 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__WEBSERVER__SECRET_KEY: dev
       AIRFLOW__CORE__FERNET_KEY: "youshouldsetthis"
-      DATA_ROOT: ${DATA_ROOT}
-      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      S3A_PATH_STYLE: ${S3A_PATH_STYLE}
     command: >
       bash -c "
       airflow db upgrade &&
@@ -46,7 +40,6 @@ services:
     volumes:
       - ../dags:/opt/airflow/dags
       - ../pipelines:/opt/airflow/pipelines
-      - ../.env:/opt/airflow/.env
     env_file:
       - ../.env
 
@@ -56,17 +49,10 @@ services:
       dockerfile: docker/Dockerfile.spark
     depends_on:
       - minio
-    environment:
-      DATA_ROOT: ${DATA_ROOT}
-      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY}
-      AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
-      S3A_PATH_STYLE: ${S3A_PATH_STYLE}
+    env_file:
+      - ../.env
     volumes:
-      - ../pipelines:/opt/project/pipelines
-      - ../.env:/opt/project/.env
+      - ../pipelines:/workspace/pipelines
     command: bash -c "tail -f /dev/null"
     ports:
       - "4040:4040"   # Spark UI

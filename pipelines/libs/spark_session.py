@@ -6,6 +6,7 @@ from pipelines.libs import constants
 def build_spark(app_name):
     spark = (
         SparkSession.builder.appName(app_name)
+        # MinIO/S3A stuff...
         .config("spark.hadoop.fs.s3a.endpoint", constants.MINIO_HOSTPORT)
         .config("spark.hadoop.fs.s3a.path.style.access", "true")
         .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
@@ -15,6 +16,7 @@ def build_spark(app_name):
         )
         .config("spark.hadoop.fs.s3a.access.key", constants.MINIO_ACCESS_KEY)
         .config("spark.hadoop.fs.s3a.secret.key", constants.MINIO_SECRET_KEY)
+        # Delta extensions
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
         .config(
             "spark.sql.catalog.spark_catalog",
